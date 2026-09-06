@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #1e1e2e;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; padding: 40px;
+  }
+  .terminal {
+    background: #181825;
+    border-radius: 12px;
+    padding: 24px 28px;
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.55;
+    color: #cdd6f4;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+    max-width: 1000px;
+    width: 100%;
+    border: 1px solid #313244;
+  }
+  .terminal .title-bar {
+    display: flex; align-items: center; gap: 8px;
+    padding-bottom: 16px; border-bottom: 1px solid #313244;
+    margin-bottom: 16px;
+  }
+  .terminal .title-bar .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .terminal .title-bar .dot.r { background: #f38ba8; }
+  .terminal .title-bar .dot.y { background: #f9e2af; }
+  .terminal .title-bar .dot.g { background: #a6e3a1; }
+  .terminal .title-bar .title { margin-left: 12px; font-size: 13px; color: #6c7086; }
+  .terminal .line { white-space: pre; }
+  .terminal .green { color: #a6e3a1; }
+  .terminal .yellow { color: #f9e2af; }
+  .terminal .red { color: #f38ba8; }
+  .terminal .dim { color: #6c7086; }
+  .terminal .cyan { color: #89dceb; }
+  .terminal .magenta { color: #f5c2e7; }
+  .terminal .bold { color: #cdd6f4; }
+  .terminal .sep { color: #45475a; }
+  .terminal .prompt { color: #a6adc8; }
+  .terminal .header { color: #f5e0dc; }
+  .terminal .json { color: #a6e3a1; }
+</style>
+</head>
+<body>
+<div class="terminal">
+  <div class="title-bar">
+    <div class="dot r"></div>
+    <div class="dot y"></div>
+    <div class="dot g"></div>
+    <span class="title">lsmod — Linux Kernel Module List Viewer (C++23)</span>
+  </div>
+
+  <div class="line prompt">  $ ./lsmod</div>
+  <div class="line bold"><span class="cyan">  Module                     Size Used  Dependencies                  State</span></div>
+  <div class="line dim">  ────────────────────────────────────  ─────────────────────────────────────</div>
+  <div class="line">  <span class="red">nf_tables</span>             372.0 KiB  <span class="red"> 302</span>  <span class="dim">nft_chain_nat,nft_compat</span>      <span class="green">Live</span>   </div>
+  <div class="line">  <span class="yellow">nf_conntrack</span>          192.0 KiB    <span class="yellow">  6</span>  <span class="dim">nf_conntrack_netlink,xt_M</span>...  <span class="green">Live</span>   </div>
+  <div class="line">  <span class="yellow">raid6_pq</span>              124.0 KiB    <span class="yellow">  4</span>  <span class="dim">btrfs,raid456,async_raid6</span>..  <span class="green">Live</span>   </div>
+  <div class="line">  <span class="yellow">x_tables</span>               64.0 KiB   <span class="red">  10</span>  <span class="dim">xt_set,xt_MASQUERADE,xt_n</span>..  <span class="green">Live</span>   </div>
+  <div class="line">  <span class="yellow">nf_nat</span>                 60.0 KiB    <span class="yellow">  3</span>  <span class="dim">nft_chain_nat,xt_MASQUER</span>..  <span class="green">Live</span>   </div>
+  <div class="line">  btrfs                  2.0 MiB     0   <span class="dim">—</span>                           <span class="green">Live</span>   </div>
+  <div class="line">  overlay                208.0 KiB   1   <span class="dim">—</span>                           <span class="green">Live</span>   </div>
+  <div class="line">  tls                    152.0 KiB   0   <span class="dim">—</span>                           <span class="green">Live</span>   </div>
+  <div class="line">  floppy                 128.0 KiB   0   <span class="dim">—</span>                           <span class="green">Live</span>   </div>
+  <div class="line">  ip_tables               32.0 KiB   0   <span class="dim">—</span>                           <span class="green">Live</span>   </div>
+  <div class="line dim">  ─────────────────────────────────────────────────────────────────────────────</div>
+  <div class="line dim">  Total: 70 modules, 24.8 MiB loaded</div>
+  <div class="line"></div>
+
+  <div class="line prompt">  $ ./lsmod --json | python3 -c "import json,sys; print(json.load(sys.stdin)['total'])"</div>
+  <div class="line json">  70</div>
+  <div class="line"></div>
+
+  <div class="line prompt">  $ ./lsmod --tree</div>
+  <div class="line bold"><span class="cyan">  Module dependency tree:</span></div>
+  <div class="line"></div>
+  <div class="line"><span class="green">  nf_tables</span></div>
+  <div class="line">  <span class="dim">├── </span><span>nfnetlink</span></div>
+  <div class="line">  <span class="dim">└── </span><span>libcrc32c</span></div>
+  <div class="line"></div>
+  <div class="line"><span class="green">  nf_conntrack</span></div>
+  <div class="line">  <span class="dim">├── </span><span>nf_defrag_ipv6</span></div>
+  <div class="line">  <span class="dim">└── </span><span>nf_defrag_ipv4</span></div>
+  <div class="line"></div>
+  <div class="line"><span class="green">  btrfs</span></div>
+  <div class="line">  <span class="dim">├── </span><span>raid6_pq</span></div>
+  <div class="line">  <span class="dim">├── </span><span>xor</span></div>
+  <div class="line">  <span class="dim">└── </span><span>libcrc32c</span></div>
+  <div class="line"></div>
+
+  <div class="line prompt">  $ ./lsmod --selftest</div>
+  <div class="line">  <span class="green">  PASS</span>  parse_modules returns modules</div>
+  <div class="line">  <span class="green">  PASS</span>  module count &gt; 10</div>
+  <div class="line">  <span class="green">  PASS</span>  first module has name</div>
+  <div class="line">  <span class="green">  PASS</span>  first module size &gt; 0</div>
+  <div class="line">  <span class="green">  PASS</span>  first module use_count &gt;= 0</div>
+  <div class="line">  <span class="green">  PASS</span>  first module is_live is bool</div>
+  <div class="line">  <span class="green">  PASS</span>  fmt_size(1048576) contains MiB</div>
+  <div class="line">  <span class="green">  PASS</span>  fmt_size(1024) contains KiB</div>
+  <div class="line">  <span class="green">  PASS</span>  fmt_count(5) contains 5</div>
+  <div class="line">  <span class="green">  PASS</span>  demo module has 2 deps</div>
+  <div class="line bold">  Results: 10 passed, 0 failed</div>
+  <div class="line dim">  ─────────────────────────────────────────────────────────────────────────────</div>
+  <div class="line dim">  /proc/modules · module size · use count · deps · tree · --json · --watch · 10 selftests · C++23 stdlib-only</div>
+</div>
+</body>
+</html>
